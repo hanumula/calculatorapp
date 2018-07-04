@@ -101,7 +101,7 @@ public class CalculatorAppTest {
 
     @Test
     public void testAppMain7() throws Exception {
-        String[] args = {"let(a, mult(add(2, 2), div(9, 0)), let(b, mult(a, 10), add(b, a)))","INFO"};
+        String[] args = {"let(a, mult(add(2, 2), div(9, 3)), let(b, mult(a, 10), add(b, a)))","INFO"};
         CalculatorApp.main(args);
 
         try{
