@@ -158,6 +158,9 @@ public class ExpressionTest {
         }
     }
 
+    /**
+     * test invalid operator exception
+     */
     @Test
     public void testEvaluateExpressionInvalidOperationException() {
         Expression expression = new Expression("adden(1,2)","WARN");
@@ -168,6 +171,9 @@ public class ExpressionTest {
         }
     }
 
+    /**
+     * test number format exception
+     */
     @Test
     public void testEvaluateExpressionNumberFormatException() {
         Expression expression = new Expression("add(1353454354354354353453454535435435435435345,2)","WARN");
@@ -178,6 +184,9 @@ public class ExpressionTest {
         }
     }
 
+    /**
+     * test bad input
+     */
     @Test
     public void testEvaluateInvalidCharacterFoundException() {
         Expression expression = new Expression("add(1?,2)","WARN");
@@ -188,6 +197,7 @@ public class ExpressionTest {
         }
     }
 
+    // test divide by 0 exception
     @Test
     public void testEvaluateDivisionByZeroException() {
         Expression expression = new Expression("div(1,0)","WARN");

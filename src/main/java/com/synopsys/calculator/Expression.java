@@ -40,7 +40,7 @@ public class Expression {
     /**
      * this evaluates the expression input and returns the result
      * @return
-     * @throws Exception
+     * @throws CalculatorAppException when emptystackexception or invalid operator or number format or division by 0 exceptions occur
      */
     public Integer evaluateExpression() throws CalculatorAppException {
         try {
@@ -115,7 +115,7 @@ public class Expression {
     /**
      * this method applies the operator on the values and returns the result
      * @return
-     * @throws CalculatorAppException
+     * @throws CalculatorAppException if invalid operator found or expression input contains division by 0
      */
     private int calcValue() throws CalculatorAppException {
         int firstVal, secondVal;
@@ -131,7 +131,7 @@ public class Expression {
     /**
      * this method reads the number part from the expressionInput and converts it to Integer
      * @return
-     * @throws CalculatorAppException
+     * @throws CalculatorAppException when the parsed number is out of bounds for INTEGER or some other format exception occurs
      */
     private int getValue() throws CalculatorAppException {
         StringBuilder sb = new StringBuilder();
@@ -191,7 +191,7 @@ public class Expression {
      * @param firstVal
      * @param secondVal
      * @return
-     * @throws CalculatorAppException
+     * @throws CalculatorAppException if invalid operator found or expression input contains division by 0
      */
     private int applyOp(char op, int firstVal, int secondVal) throws CalculatorAppException {
         switch (op){
@@ -219,7 +219,7 @@ public class Expression {
      * this method substitutes the verbal operator with the symbol
      * @param operator
      * @return
-     * @throws CalculatorAppException
+     * @throws CalculatorAppException when invalid operator found
      */
     private Character charEquivForOp(String operator) throws CalculatorAppException {
         switch (operator){
