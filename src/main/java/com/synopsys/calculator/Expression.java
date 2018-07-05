@@ -26,7 +26,7 @@ public class Expression {
      * @param expressionInput
      * @param logPriority
      */
-    Expression(String expressionInput, String logPriority) {
+    public Expression(String expressionInput, String logPriority) {
         this.expressionInput = expressionInput; //expression input
         this.tokens = this.expressionInput.toCharArray(); //fetch all chars in expression input
         this.values = new Stack<>(); //instantiate a stack for values during exp evaluation
@@ -42,7 +42,7 @@ public class Expression {
      * @return
      * @throws Exception
      */
-    Integer evaluateExpression() throws Exception {
+    public Integer evaluateExpression() throws CalculatorAppException {
         try {
             while(index<this.tokens.length){ //loop through all the characters in the expression to evaluate it
                 if(this.tokens[index] == ' ' || this.tokens[index] == ','){ // increment the loop and continue for space and comma
@@ -87,7 +87,7 @@ public class Expression {
                     fillValue();
                 } else {
                     logMessage(MessageConstants.INVALID_CHARACTER_FOUND);
-                    throw new Exception(MessageConstants.INVALID_CHARACTER_FOUND);
+                    throw new CalculatorAppException(MessageConstants.INVALID_CHARACTER_FOUND);
                 }
                 this.index++;
             }
@@ -95,10 +95,7 @@ public class Expression {
             return values.pop(); // return the final result
         } catch (EmptyStackException emptyStackException) { // catch runtime empty stack exception and return an appropriate message to the user
             logMessage(MessageConstants.INTERNAL_ISSUE + emptyStackException.getMessage());
-            throw new Exception(MessageConstants.INTERNAL_ISSUE);
-        } catch (Exception exception) { // catch any other exception and return an appropriate message to the user
-            logMessage(MessageConstants.INTERNAL_ISSUE + exception.getMessage());
-            throw new Exception(MessageConstants.INTERNAL_ISSUE);
+            throw new CalculatorAppException(MessageConstants.INTERNAL_ISSUE);
         }
     }
 
@@ -118,9 +115,9 @@ public class Expression {
     /**
      * this method applies the operator on the values and returns the result
      * @return
-     * @throws Exception
+     * @throws CalculatorAppException
      */
-    private int calcValue() throws Exception {
+    private int calcValue() throws CalculatorAppException {
         int firstVal, secondVal;
         firstVal = this.values.pop();
         if(!this.values.empty()) {
@@ -134,9 +131,9 @@ public class Expression {
     /**
      * this method reads the number part from the expressionInput and converts it to Integer
      * @return
-     * @throws Exception
+     * @throws CalculatorAppException
      */
-    private int getValue() throws Exception {
+    private int getValue() throws CalculatorAppException {
         StringBuilder sb = new StringBuilder();
         Integer value;
         while(index<this.tokens.length && this.tokens[index] >= '0' && this.tokens[index] <= '9') {
@@ -146,8 +143,8 @@ public class Expression {
         try {
             value = Integer.parseInt(sb.toString());
         } catch (NumberFormatException numberFormatException) {
-            logMessage(MessageConstants.NUMBER_FORMAT_EXCEPTION_MSG);
-            throw new Exception(MessageConstants.NUMBER_FORMAT_EXCEPTION_MSG + numberFormatException.getMessage());
+            logMessage(MessageConstants.NUMBER_FORMAT_EXCEPTION_MSG  + numberFormatException.getMessage());
+            throw new CalculatorAppException(MessageConstants.NUMBER_FORMAT_EXCEPTION_MSG);
         }
         return value;
     }
@@ -194,9 +191,9 @@ public class Expression {
      * @param firstVal
      * @param secondVal
      * @return
-     * @throws Exception
+     * @throws CalculatorAppException
      */
-    private int applyOp(char op, int firstVal, int secondVal) throws Exception {
+    private int applyOp(char op, int firstVal, int secondVal) throws CalculatorAppException {
         switch (op){
             case '+':
                 return firstVal+secondVal;
@@ -207,14 +204,14 @@ public class Expression {
             case '/':
                 if(firstVal == 0){
                     logMessage(MessageConstants.DIVISION_BY_ZERO_INVALID);
-                    throw new Exception(MessageConstants.DIVISION_BY_ZERO_INVALID);
+                    throw new CalculatorAppException(MessageConstants.DIVISION_BY_ZERO_INVALID);
                 }
                 return secondVal/firstVal;
             case '=':
                 return firstVal;
                 default:
                     logMessage(MessageConstants.INVALID_OPERATOR);
-                    throw new Exception(MessageConstants.INVALID_OPERATOR);
+                    throw new CalculatorAppException(MessageConstants.INVALID_OPERATOR);
         }
     }
 
@@ -222,9 +219,9 @@ public class Expression {
      * this method substitutes the verbal operator with the symbol
      * @param operator
      * @return
-     * @throws Exception
+     * @throws CalculatorAppException
      */
-    private Character charEquivForOp(String operator) throws Exception {
+    private Character charEquivForOp(String operator) throws CalculatorAppException {
         switch (operator){
             case "add":
                 return '+';
@@ -238,7 +235,7 @@ public class Expression {
                 return '=';
                 default:
                     logMessage(MessageConstants.INVALID_OPERATOR);
-                    throw new Exception(MessageConstants.INVALID_OPERATOR);
+                    throw new CalculatorAppException(MessageConstants.INVALID_OPERATOR);
         }
 
     }
