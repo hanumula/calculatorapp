@@ -9,36 +9,36 @@ import java.util.Stack;
 
 public class Expression {
 
-    private String expression;
+    private String expressionInput;
     private char[] tokens;
     private Stack<Integer> values;
     private Stack<Character> ops;
     private Stack<Character> vars;
     private Map<Character,Integer> map;
-    private Integer i;
+    private Integer index;
     private String logPriority;
 
-    final static Logger logger = LogManager.getLogger(CalculatorApp.class.getName());
+    private final static Logger logger = LogManager.getLogger(CalculatorApp.class.getName());
 
-    Expression(String expression, String logPriority) {
-        this.expression = expression;
-        this.tokens = this.expression.toCharArray();
+    Expression(String expressionInput, String logPriority) {
+        this.expressionInput = expressionInput;
+        this.tokens = this.expressionInput.toCharArray();
         this.values = new Stack<>();
         this.ops = new Stack<>();
         this.vars = new Stack<>();
         this.map = new HashMap<>();
-        this.i = 0;
+        this.index = 0;
         this.logPriority = logPriority;
     }
 
-    Integer evaluateExpression() throws Exception {
+    Integer evaluateExpression(){
 
-        while(i<this.tokens.length){
-            if(this.tokens[i] == ' ' || this.tokens[i] == ','){
-                this.i++;
+        while(index<this.tokens.length){
+            if(this.tokens[index] == ' ' || this.tokens[index] == ','){
+                this.index++;
                 continue;
             }
-            if(this.tokens[i] >= 65 && this.tokens[i] <=122){
+            if(this.tokens[index] >= 65 && this.tokens[index] <=122){
                 String str = getOperand();
                 if(str.length()>1){
                    this.ops.push(charEquivForOp(str));
@@ -50,12 +50,12 @@ public class Expression {
                         this.map.put(str.charAt(0),null);
                     }
                 }
-                if(this.tokens[i] == '('){
-                    this.ops.push(this.tokens[i]);
+                if(this.tokens[index] == '('){
+                    this.ops.push(this.tokens[index]);
                 }
-            } else if(this.tokens[i] == '('){
+            } else if(this.tokens[index] == '('){
                 this.ops.push('(');
-            } else if(tokens[i] == ')'){
+            } else if(tokens[index] == ')'){
                 if(!ops.isEmpty()) {
                     char temp = ops.pop();
                     if (!ops.isEmpty()&& ops.peek() == '=') {
@@ -67,15 +67,15 @@ public class Expression {
                     }
                 }
                 fillValue();
-            } else if(this.tokens[i] >= 48 && this.tokens[i] <= 57){
+            } else if(this.tokens[index] >= 48 && this.tokens[index] <= 57){
                 this.values.push(getValue());
-                if(this.tokens[i] == ')'){
+                if(this.tokens[index] == ')'){
                     this.ops.pop();
                     this.values.push(applyOp(ops.pop(), values.pop(), values.pop()));
                 }
                 fillValue();
             }
-            this.i++;
+            this.index++;
         }
 
         return values.pop();
@@ -83,9 +83,9 @@ public class Expression {
 
     private String getOperand() {
         StringBuilder sb = new StringBuilder();
-        while(i<this.tokens.length && this.tokens[i] >=65 && this.tokens[i] <=122){
-            sb.append(this.tokens[i]);
-            this.i ++;
+        while(index<this.tokens.length && this.tokens[index] >=65 && this.tokens[index] <=122){
+            sb.append(this.tokens[index]);
+            this.index ++;
         }
         return sb.toString();
     }
@@ -103,9 +103,9 @@ public class Expression {
 
     private int getValue() {
         StringBuilder sb = new StringBuilder();
-        while(i<this.tokens.length && this.tokens[i] >= '0' && this.tokens[i] <= '9') {
-            sb.append(this.tokens[i]);
-            this.i++;
+        while(index<this.tokens.length && this.tokens[index] >= '0' && this.tokens[index] <= '9') {
+            sb.append(this.tokens[index]);
+            this.index++;
         }
         return Integer.parseInt(sb.toString());
     }
