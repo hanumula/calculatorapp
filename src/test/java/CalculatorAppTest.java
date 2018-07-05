@@ -123,8 +123,33 @@ public class CalculatorAppTest {
         }
     }
 
+    @Test
+    public void testAppMain9() throws Exception {
+        String[] args = {"add(let(a, 5, add(a, a)), let(a, 5, add(a, a)))","INFO"};
+        CalculatorApp.main(args);
+
+        try{
+            assertEquals("20", outContent.toString().trim());
+        } catch (AssertionError assertionError){
+            fail("Wrong value for expression evaluation");
+        }
+    }
+
+    @Test
+    public void testAppMain10() throws Exception {
+        String[] args = {"add(let(a, 5, let(b, mult(a, 10), add(b, a))), let(a, let(b, 10, add(b, b)), let(b, 20, add(a, b)))","INFO"};
+        CalculatorApp.main(args);
+
+        try{
+            assertEquals("95", outContent.toString().trim());
+        } catch (AssertionError assertionError){
+            fail("Wrong value for expression evaluation");
+        }
+    }
+
     @After
     public void cleanUpStreams() {
         System.setOut(null);
     }
 }
+

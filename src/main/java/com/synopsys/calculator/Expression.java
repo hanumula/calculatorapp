@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-class Expression {
+public class Expression {
 
     private String expression;
     private char[] tokens;
@@ -56,7 +56,16 @@ class Expression {
             } else if(this.tokens[i] == '('){
                 this.ops.push('(');
             } else if(tokens[i] == ')'){
-                this.values.push(calcValue());
+                if(!ops.isEmpty()) {
+                    char temp = ops.pop();
+                    if (!ops.isEmpty()&& ops.peek() == '=') {
+                        this.values.push(calcValue());
+                    } else if (!ops.isEmpty() && values.size() >= 2) {
+                        this.values.push(calcValue());
+                    } else {
+                        ops.push(temp);
+                    }
+                }
                 fillValue();
             } else if(this.tokens[i] >= 48 && this.tokens[i] <= 57){
                 this.values.push(getValue());
@@ -81,16 +90,15 @@ class Expression {
         return sb.toString();
     }
 
-    private int calcValue() throws Exception {
-        this.ops.pop();
-        int a,b;
-        a = this.values.pop();
+    private int calcValue(){
+        int firstVal, secondVal;
+        firstVal = this.values.pop();
         if(!this.values.empty()) {
-            b = this.values.pop();
+            secondVal = this.values.pop();
         } else {
-            b = 0;
+            secondVal = 0;
         }
-        return applyOp(this.ops.pop(), a, b);
+        return applyOp(this.ops.pop(), firstVal, secondVal);
     }
 
     private int getValue() {
@@ -106,10 +114,12 @@ class Expression {
         if(!this.vars.empty() && this.map.get(this.vars.peek()) == null && this.ops.peek()=='('){
             this.ops.pop();
             if(this.ops.peek()=='='){
-                this.map.put(this.vars.peek(), this.values.peek());
-                this.vars.pop();
+                this.map.put(this.vars.pop(), this.values.pop());
+                this.ops.pop();
+            } else {
+                this.ops.push('(');
             }
-            this.ops.push('(');
+
         }
     }
 
