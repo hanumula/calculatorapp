@@ -85,16 +85,19 @@ public class Expression {
                         this.values.push(applyOp(ops.pop(), values.pop(), values.pop()));
                     }
                     fillValue();
+                } else {
+                    logMessage(MessageConstants.INVALID_CHARACTER_FOUND);
+                    throw new Exception(MessageConstants.INVALID_CHARACTER_FOUND);
                 }
                 this.index++;
             }
 
             return values.pop(); // return the final result
-        } catch (EmptyStackException esex) { // catch runtime empty stack exception and return an appropriate message to the user
-            logMessage(MessageConstants.INTERNAL_ISSUE + esex.getMessage());
+        } catch (EmptyStackException emptyStackException) { // catch runtime empty stack exception and return an appropriate message to the user
+            logMessage(MessageConstants.INTERNAL_ISSUE + emptyStackException.getMessage());
             throw new Exception(MessageConstants.INTERNAL_ISSUE);
-        } catch (Exception ex) { // catch any other exception and return an appropriate message to the user
-            logMessage(MessageConstants.INTERNAL_ISSUE + ex.getMessage());
+        } catch (Exception exception) { // catch any other exception and return an appropriate message to the user
+            logMessage(MessageConstants.INTERNAL_ISSUE + exception.getMessage());
             throw new Exception(MessageConstants.INTERNAL_ISSUE);
         }
     }
@@ -131,14 +134,22 @@ public class Expression {
     /**
      * this method reads the number part from the expressionInput and converts it to Integer
      * @return
+     * @throws Exception
      */
-    private int getValue() {
+    private int getValue() throws Exception {
         StringBuilder sb = new StringBuilder();
+        Integer value;
         while(index<this.tokens.length && this.tokens[index] >= '0' && this.tokens[index] <= '9') {
             sb.append(this.tokens[index]);
             this.index++;
         }
-        return Integer.parseInt(sb.toString());
+        try {
+            value = Integer.parseInt(sb.toString());
+        } catch (NumberFormatException numberFormatException) {
+            logMessage(MessageConstants.NUMBER_FORMAT_EXCEPTION_MSG);
+            throw new Exception(MessageConstants.NUMBER_FORMAT_EXCEPTION_MSG + numberFormatException.getMessage());
+        }
+        return value;
     }
 
     /**
