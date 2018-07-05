@@ -13,11 +13,17 @@ public class CalculatorAppTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
+    /**
+     * initial setup
+     */
     @Before
     public void setup() {
         System.setOut(new PrintStream(outContent));
     }
 
+    /**
+     * test the constructor
+     */
     @Test
     public void testAppConstructor() {
         try {
@@ -27,6 +33,10 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     *
+     * test expression
+     */
     @Test
     public void testAppMain1() throws Exception {
         String[] args = {"add(1,2)","INFO"};
@@ -39,6 +49,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain2() throws Exception {
         String[] args = {"add(1, mult(2, 3))","INFO"};
@@ -51,6 +64,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain3() throws Exception {
         String[] args = {"mult(add(2, 2), div(9, 3))","INFO"};
@@ -63,6 +79,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain4() throws Exception {
         String[] args = {"let(a, 5, add(a, a))","INFO"};
@@ -75,6 +94,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain5() throws Exception {
         String[] args = {"let(a, 5, let(b, mult(a, 10), add(b, a)))","INFO"};
@@ -87,6 +109,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain6() throws Exception {
         String[] args = {"let(a, let(b, 10, add(b, b)), let(b, 20, add(a, b))","INFO"};
@@ -99,6 +124,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain7() throws Exception {
         String[] args = {"let(a, mult(add(2, 2), div(9, 3)), let(b, mult(a, 10), add(b, a)))","INFO"};
@@ -111,6 +139,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain8() throws Exception {
         String[] args = {"let(a, let(b, add(1, mult(2, 3)), add(b, b)), let(b, 20, add(a, b))","INFO"};
@@ -123,6 +154,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain9() throws Exception {
         String[] args = {"add(let(a, 5, add(a, a)), let(a, 5, add(a, a)))","INFO"};
@@ -135,6 +169,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * test expression
+     */
     @Test
     public void testAppMain10() throws Exception {
         String[] args = {"add(let(a, 5, let(b, mult(a, 10), add(b, a))), let(a, let(b, 10, add(b, b)), let(b, 20, add(a, b)))","INFO"};
@@ -147,6 +184,9 @@ public class CalculatorAppTest {
         }
     }
 
+    /**
+     * clean up streams
+     */
     @After
     public void cleanUpStreams() {
         System.setOut(null);
