@@ -1,7 +1,6 @@
 import com.synopsys.calculator.CalculatorAppException;
 import com.synopsys.calculator.Expression;
 import com.synopsys.calculator.MessageConstants;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -17,7 +16,7 @@ public class ExpressionTest {
         Expression expression = new Expression("add(1,2)","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 3);
+            assertSame(3 , result);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -32,7 +31,7 @@ public class ExpressionTest {
         Expression expression = new Expression("add(1, mult(2, 3))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 7);
+            assertSame(result , 7);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -47,7 +46,7 @@ public class ExpressionTest {
         Expression expression = new Expression("mult(add(2, 2), div(9, 3))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 12);
+            assertSame(result , 12);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -62,7 +61,7 @@ public class ExpressionTest {
         Expression expression = new Expression("let(a, 5, add(a, a))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 10);
+            assertSame(result , 10);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -77,7 +76,7 @@ public class ExpressionTest {
         Expression expression = new Expression("let(a, 5, let(b, mult(a, 10), add(b, a)))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 55);
+            assertSame(result , 55);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -92,7 +91,7 @@ public class ExpressionTest {
         Expression expression = new Expression("let(a, let(b, 10, add(b, b)), let(b, 20, add(a, b))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 40);
+            assertSame(result , 40);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -107,7 +106,7 @@ public class ExpressionTest {
         Expression expression = new Expression("let(a, mult(add(2, 2), div(9, 3)), let(b, mult(a, 10), add(b, a)))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 132);
+            assertTrue( result == 132);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -122,7 +121,7 @@ public class ExpressionTest {
         Expression expression = new Expression("let(a, let(b, add(1, mult(2, 3)), add(b, b)), let(b, 20, add(a, b))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 34);
+            assertSame( result , 34);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -137,7 +136,7 @@ public class ExpressionTest {
         Expression expression = new Expression("add(let(a, 5, add(a, a)), let(a, 5, add(a, a)))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 20);
+            assertSame( result , 20);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -152,7 +151,7 @@ public class ExpressionTest {
         Expression expression = new Expression("add(let(a, 5, let(b, mult(a, 10), add(b, a))), let(a, let(b, 10, add(b, b)), let(b, 20, add(a, b)))","ERROR");
         try {
             Integer result = expression.evaluateExpression();
-            assertTrue("value doesn't match", result == 95);
+            assertSame( result , 95);
         } catch (AssertionError assertionError){
             fail("Wrong result for expression evaluation");
         }
@@ -180,7 +179,7 @@ public class ExpressionTest {
         try {
             expression.evaluateExpression();
         } catch (CalculatorAppException ex){
-            assertTrue("No number format exception", ex.getMessage().contains(MessageConstants.NUMBER_FORMAT_EXCEPTION_MSG));
+            assertTrue( ex.getMessage().contains(MessageConstants.NUMBER_FORMAT_EXCEPTION_MSG));
         }
     }
 
@@ -193,7 +192,7 @@ public class ExpressionTest {
         try {
             expression.evaluateExpression();
         } catch (CalculatorAppException ex){
-            assertTrue("No invalid character exception", ex.getMessage().contains(MessageConstants.INVALID_CHARACTER_FOUND));
+            assertTrue( ex.getMessage().contains(MessageConstants.INVALID_CHARACTER_FOUND));
         }
     }
 
@@ -204,7 +203,7 @@ public class ExpressionTest {
         try {
             expression.evaluateExpression();
         } catch (CalculatorAppException ex){
-            assertTrue("No div by 0 exception", ex.getMessage().contains(MessageConstants.DIVISION_BY_ZERO_INVALID));
+            assertTrue( ex.getMessage().contains(MessageConstants.DIVISION_BY_ZERO_INVALID));
         }
     }
 

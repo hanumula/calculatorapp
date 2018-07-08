@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-public class Expression {
+public class Expression implements IExpression {
 
     private String expressionInput;
     private char[] tokens;
@@ -193,7 +193,7 @@ public class Expression {
      * @return
      * @throws CalculatorAppException if invalid operator found or expression input contains division by 0
      */
-    private int applyOp(char op, int firstVal, int secondVal) throws CalculatorAppException {
+    public int applyOp(char op, int firstVal, int secondVal) throws CalculatorAppException {
         switch (op){
             case '+':
                 return firstVal+secondVal;
@@ -221,7 +221,7 @@ public class Expression {
      * @return
      * @throws CalculatorAppException when invalid operator found
      */
-    private Character charEquivForOp(String operator) throws CalculatorAppException {
+    public Character charEquivForOp(String operator) throws CalculatorAppException {
         switch (operator){
             case "add":
                 return '+';
